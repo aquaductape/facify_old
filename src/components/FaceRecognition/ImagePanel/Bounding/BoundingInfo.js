@@ -11,7 +11,11 @@ const BoundingInfo = ({ boxId, imageUrl, boundingBox, onCanvas }) => {
 		backgroundPosition: `${boundingBox.left_col * 100}% ${boundingBox.top_row * 100}%`,
 		height: height
 	};
-	return <canvas ref={(canvas) => onCanvas(canvas, boxId)} />;
+	return (
+		<div>
+			<canvas ref={(canvas) => onCanvas(canvas, boxId)} />
+		</div>
+	);
 };
 
 export default BoundingInfo;

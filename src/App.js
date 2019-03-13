@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Logo from './components/Logo/Logo';
 import Clarifai from 'clarifai';
 import { createCanvas, findCanvasItem } from './utils/createCanvas';
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
@@ -41,7 +42,6 @@ class App extends Component {
 	};
 
 	onMainImageLoad = (e, boundingBoxArr) => {
-		debugger;
 		// const bbIdx = this.state.bbIdx;
 		const img = e.target;
 		// const boundingBox = boundingBoxArr[bbIdx].region_info.bounding_box;
@@ -51,7 +51,6 @@ class App extends Component {
 			createCanvas.call(this, id, img, boundingBox);
 		});
 
-		debugger;
 		// this.setState({ imageSize: img });
 		// this.setState({ bbIdx: bbIdx + 1 });
 	};
@@ -76,18 +75,21 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<ImageLinkForm
-					inputValue={this.state.input}
-					onButtonSubmit={this.onButtonSubmit}
-					onInputChange={this.onInputChange}
-				/>
-				<FaceRecognition
-					imageStatus={this.state.imageStatusOk}
-					imageUrl={this.state.imageUrl}
-					onMainImageLoad={this.onMainImageLoad}
-					boundingBox={this.state.boundingBox}
-					onCanvas={this.onCanvas}
-				/>
+				<Logo />
+				<main>
+					<ImageLinkForm
+						inputValue={this.state.input}
+						onButtonSubmit={this.onButtonSubmit}
+						onInputChange={this.onInputChange}
+					/>
+					<FaceRecognition
+						imageStatus={this.state.imageStatusOk}
+						imageUrl={this.state.imageUrl}
+						onMainImageLoad={this.onMainImageLoad}
+						boundingBox={this.state.boundingBox}
+						onCanvas={this.onCanvas}
+					/>
+				</main>
 			</div>
 		);
 	}

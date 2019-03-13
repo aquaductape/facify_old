@@ -28,7 +28,6 @@ const createCanvas = function(id, img, boundingBox) {
 	const endCropHeight =
 		imgNaturalHeight /
 		((imgNaturalHeight - (imgNaturalHeight * (1 - boundingBox.bottom_row) + startCropHeight)) / canvasHeight);
-	debugger;
 
 	canvas.height = canvasHeight;
 	canvas.width = canvasWidth;

@@ -1,9 +1,55 @@
-.particles {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	pointer-events: auto;
-	z-index: -1;
+.App {
+	max-width: 800px;
+	padding: 0 20px;
+	margin: auto;
+}
+
+main {
+	background: #ffffff;
+}
+
+.input-button {
+	border: none;
+	padding: 10px 20px;
+	color: #d1d1d1;
+	position: relative;
+	background: #000066;
+	cursor: pointer;
+}
+
+.input-button:hover {
+	color: white;
+	background: #00004e;
+}
+
+.input-button:focus {
+	outline: none;
+	color: white;
+	background: #000000;
+}
+
+.input-text {
+	padding: 10px;
+	background: #ffffff;
+	border: none;
+	color: #8e8e8e;
+	font-weight: normal;
+}
+
+.input-text:focus {
+	outline: 5px auto #000066;
+	color: #333333;
+	font-weight: bold;
+}
+
+.input-group {
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+#logo {
+	color: white;
+	font-weight: bold;
+	font-size: 2rem;
+	margin: 50px 0;
 }

@@ -3,11 +3,17 @@ import React from 'react';
 const ImageLinkForm = ({ inputValue, onInputChange, onButtonSubmit }) => {
 	return (
 		<div>
-			<p>{'Gotta scan'}</p>
 			<div>
-				<div className="">
-					<input autoFocus value={inputValue} onChange={onInputChange} className="" type="" />
-					<button onClick={onButtonSubmit} className="">
+				<div className="input-group">
+					<input
+						autoFocus
+						spellCheck="false"
+						value={inputValue}
+						onChange={onInputChange}
+						className="input-text"
+						type=""
+					/>
+					<button onClick={onButtonSubmit} className="input-button">
 						Detect
 					</button>
 				</div>
