@@ -2,6 +2,12 @@ const findCanvasItem = (id, canvasCollection) => {
 	return canvasCollection.find((canvas) => canvas.id === id);
 };
 
+const removePreviousCanvasCollection = function(canvasCollection) {
+	const filteredCollection = canvasCollection.filter((canvas) => canvas.clientHeight && canvas.clientWidth);
+	debugger;
+	this.setState({ canvasCollection: filteredCollection });
+};
+
 const createCanvas = function(id, img, boundingBox) {
 	const imgClientWidth = img.offsetWidth;
 	const imgClientHeight = img.offsetHeight;
@@ -29,6 +35,8 @@ const createCanvas = function(id, img, boundingBox) {
 		imgNaturalHeight /
 		((imgNaturalHeight - (imgNaturalHeight * (1 - boundingBox.bottom_row) + startCropHeight)) / canvasHeight);
 
+	debugger;
+
 	canvas.height = canvasHeight;
 	canvas.width = canvasWidth;
 	ctx.drawImage(
@@ -44,4 +52,4 @@ const createCanvas = function(id, img, boundingBox) {
 	);
 };
 
-export { createCanvas, findCanvasItem };
+export { createCanvas, findCanvasItem, removePreviousCanvasCollection };

@@ -11,9 +11,10 @@ const BoundingInfo = ({ boxId, imageUrl, boundingBox, onCanvas }) => {
 		backgroundPosition: `${boundingBox.left_col * 100}% ${boundingBox.top_row * 100}%`,
 		height: height
 	};
+	debugger;
 	return (
 		<div>
-			<canvas ref={(canvas) => onCanvas(canvas, boxId)} />
+			<canvas ref={(canvas) => (canvas ? onCanvas(canvas, boxId) : null)} />
 		</div>
 	);
 };

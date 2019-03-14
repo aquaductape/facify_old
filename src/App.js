@@ -4,7 +4,8 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
 import Clarifai from 'clarifai';
-import { createCanvas, findCanvasItem } from './utils/createCanvas';
+import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
+import Stats from './components/Stats/Stats';
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
 
 const app = new Clarifai.App({
@@ -28,12 +29,14 @@ class App extends Component {
 
 	onCanvas = (canvas, id) => {
 		const canvasCollection = this.state.canvasCollection.slice();
+
 		const canvasItem = {
 			id,
 			canvas
 		};
 		const canvasExist = findCanvasItem(id, canvasCollection);
 
+		debugger;
 		if (!canvasExist) {
 			canvasCollection.push(canvasItem);
 
@@ -51,12 +54,15 @@ class App extends Component {
 			createCanvas.call(this, id, img, boundingBox);
 		});
 
+		removePreviousCanvasCollection.call(this, this.state.canvasCollection.slice());
 		// this.setState({ imageSize: img });
 		// this.setState({ bbIdx: bbIdx + 1 });
 	};
 
 	onButtonSubmit = (e) => {
-		// this.setState({ bbCollectionSize: [] });
+		debugger;
+		// const canvasCollection = this.state.canvasCollection;
+		// canvasCollection.forEach((canvas) => canvas === null);
 		app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
 			(response) => {
 				const box = response.outputs[0].data.regions;
@@ -82,6 +88,7 @@ class App extends Component {
 						onButtonSubmit={this.onButtonSubmit}
 						onInputChange={this.onInputChange}
 					/>
+					<Stats boundingBox={this.state.boundingBox} />
 					<FaceRecognition
 						imageStatus={this.state.imageStatusOk}
 						imageUrl={this.state.imageUrl}

@@ -13,6 +13,7 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	background: url('./img/main_background.svg');
 	background-size: cover;
+	background-repeat: no-repeat;
 	text-align: center;
 }
 

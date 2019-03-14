@@ -25,7 +25,7 @@
 	grid-template-columns: repeat(4, 1fr);
 	justify-items: center;
 	grid-row-gap: 10px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 160px;
 }
 

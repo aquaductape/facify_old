@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 25.443802 25.44381"
+   height="25.44381mm"
+   width="25.443802mm">
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-26.654433,-164.5342)"
+     id="layer1">
+    <g
+       id="g3747">
+      <path
+         style="opacity:1;fill:#224aff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:52.91666412;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         d="m 30.738989,166.18689 c 5.319918,-2.20358 11.954784,-2.20358 17.274691,0 1.059137,0.43871 1.993165,1.37275 2.431871,2.43189 2.203579,5.3199 2.203579,11.95477 0,17.27468 -0.438706,1.05913 -1.372734,1.99316 -2.431871,2.43187 -5.319907,2.20358 -11.954773,2.20358 -17.274691,0 -1.059126,-0.43871 -1.993166,-1.37274 -2.431872,-2.43187 -2.203579,-5.31991 -2.203579,-11.95478 0,-17.27468 0.438706,-1.05914 1.372746,-1.99318 2.431872,-2.43189 z"
+         id="rect3737" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:18.10405922px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         x="32.149742"
+         y="183.59431"
+         id="text3718"><tspan
+           id="tspan3716"
+           x="32.149742"
+           y="183.59431"
+           style="fill:#ffffff;stroke-width:0.26458332">ᗩ</tspan></text>
+    </g>
+  </g>
+</svg>
