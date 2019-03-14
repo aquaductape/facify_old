@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/facify/static/css/main.a330a2d9.chunk.css"
   },
   {
-    "revision": "82eaf107783ab02d02e89749e0b8e6c5",
+    "revision": "6be78c97b61eb55951e3985f4e6cb77b",
     "url": "/facify/index.html"
   }
 ];
