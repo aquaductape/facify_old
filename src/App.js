@@ -14,7 +14,7 @@ const app = new Clarifai.App({
 
 class App extends Component {
 	state = {
-		input: 'https://i.kym-cdn.com/photos/images/original/000/994/346/7ac.jpg',
+		input: '',
 		imageUrl: '',
 		imageStatusOk: null,
 		imageSize: null,
@@ -45,9 +45,8 @@ class App extends Component {
 	};
 
 	onMainImageLoad = (e, boundingBoxArr) => {
-		// const bbIdx = this.state.bbIdx;
 		const img = e.target;
-		// const boundingBox = boundingBoxArr[bbIdx].region_info.bounding_box;
+
 		boundingBoxArr.forEach(({ region_info }) => {
 			const boundingBox = region_info.bounding_box;
 			const id = `${boundingBox.top_row}${boundingBox.left_col}${boundingBox.bottom_row}${boundingBox.right_col}`;
@@ -55,25 +54,59 @@ class App extends Component {
 		});
 
 		removePreviousCanvasCollection.call(this, this.state.canvasCollection.slice());
-		// this.setState({ imageSize: img });
-		// this.setState({ bbIdx: bbIdx + 1 });
+	};
+
+	onImageUpload = (e) => {
+		const file = e.target.files[0];
+		const reader = new FileReader();
+		debugger;
+		reader.addEventListener(
+			'load',
+			() => {
+				const imgURL = reader.result;
+				const imgBase64Only = imgURL.replace(/data:.*;base64,/, '');
+				app.models
+					.predict(Clarifai.FACE_DETECT_MODEL, {
+						base64: imgBase64Only
+					})
+					.then(
+						(response) => {
+							const box = response.outputs[0].data.regions;
+							this.setState({ boundingBox: box });
+							this.setState({ imageStatusOk: true });
+							this.setState({ imageUrl: imgURL });
+						},
+						(err) => {
+							this.setState({ imageStatusOk: err.status });
+							this.setState({ boundingBox: null });
+						}
+					);
+			},
+			false
+		);
+
+		if (file) {
+			reader.readAsDataURL(file);
+		}
 	};
 
 	onButtonSubmit = (e) => {
-		debugger;
-		// const canvasCollection = this.state.canvasCollection;
-		// canvasCollection.forEach((canvas) => canvas === null);
-		app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
+		const inputVal = this.state.input.trim();
+
+		if (inputVal === this.state.imageUrl) {
+			return null;
+		}
+
+		app.models.predict(Clarifai.FACE_DETECT_MODEL, inputVal).then(
 			(response) => {
 				const box = response.outputs[0].data.regions;
 				this.setState({ boundingBox: box });
 				this.setState({ imageStatusOk: true });
-				this.setState({ imageUrl: this.state.input });
+				this.setState({ imageUrl: inputVal });
 			},
 			(err) => {
 				this.setState({ imageStatusOk: err.status });
 				this.setState({ boundingBox: null });
-				// there was an error
 			}
 		);
 	};
@@ -85,6 +118,7 @@ class App extends Component {
 				<main>
 					<ImageLinkForm
 						inputValue={this.state.input}
+						onImageUpload={this.onImageUpload}
 						onButtonSubmit={this.onButtonSubmit}
 						onInputChange={this.onInputChange}
 					/>

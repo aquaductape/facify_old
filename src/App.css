@@ -32,18 +32,64 @@ h1 {
 	padding: 10px 0;
 }
 
+.input-file--hidden {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.label-input-file {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: 500ms;
+}
+
+.label-input-file:hover,
+.input-file--hidden:focus + .label-input-file {
+	outline: none;
+	background: #c6c6c6;
+	color: #414141;
+}
+
+.label-input-file:after {
+	position: absolute;
+	content: '';
+	top: 0;
+	right: -12px;
+	width: 0;
+	height: 0;
+	border-width: 42px 14px 0 0;
+	border-color: #eaeaea transparent transparent transparent;
+	border-style: solid;
+	pointer-events: none;
+}
+
+.label-input-file:hover:after,
+.input-file--hidden:focus + .label-input-file:after {
+	outline: none;
+	border-color: #c6c6c6 transparent transparent transparent;
+}
+
 .input-button {
 	border: none;
 	padding: 10px 20px;
 	color: #d1d1d1;
 	position: relative;
 	background: #000066;
+	font-size: 1rem;
 	cursor: pointer;
+	transition: 500ms;
 }
 
 .input-button:hover {
-	color: white;
-	background: #00004e;
+	color: #ffffff;
+	background: #000000;
 }
 
 .input-button:focus {
@@ -61,7 +107,13 @@ h1 {
 }
 
 .input-text:focus {
-	outline: 5px auto #000066;
+	outline: none;
+	color: #333333;
+	font-weight: bold;
+}
+
+.input-text:focus::placeholder {
+	outline: none;
 	color: #333333;
 	font-weight: bold;
 }
@@ -71,9 +123,19 @@ h1 {
 	grid-template-columns: 1fr;
 }
 
+.multifile-upload-group {
+	display: grid;
+	grid-template-columns: 1fr 102px;
+}
 #logo {
 	color: white;
 	font-weight: bold;
 	font-size: 2rem;
 	margin: 50px 0;
+}
+
+.error-message {
+	padding: 20px;
+	color: #999999;
+	font-size: 1rem;
 }

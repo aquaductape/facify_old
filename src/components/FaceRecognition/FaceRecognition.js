@@ -12,7 +12,7 @@ const FaceRecognition = ({ imageStatus, imageUrl, boundingBox, onMainImageLoad, 
 		render = (
 			<div className="image-panel" style={{ maxWidth: '800px' }}>
 				<ImageDemo imageUrl={imageUrl} boundingBox={boundingBox} onMainImageLoad={onMainImageLoad} />
-				<InfoDemo imageUrl={imageUrl} boundingBox={boundingBox} onCanvas={onCanvas} />
+				<InfoDemo boundingBox={boundingBox} onCanvas={onCanvas} />
 			</div>
 		);
 	} else {
