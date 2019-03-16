@@ -6,7 +6,7 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
 import Stats from './components/Stats/Stats';
 import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
-import { getDataUrl } from './utils/resetOrientation';
+import { getImageUrl } from './utils/resetOrientation';
 
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
 
@@ -80,13 +80,17 @@ class App extends Component {
 		removePreviousCanvasCollection.call(this, this.state.canvasCollection.slice());
 	};
 
-	onImageUpload = (e) => {
+	onImageUpload = async (e) => {
+		// e.persist();
 		const file = e.target.files[0];
-
+		if (!file) {
+			return null;
+		}
+		debugger;
 		// resets original orientation back to 1 if needed
-		getDataUrl(file, (imgBase64) => {
-			this.clarifaiDetectFace({ base64: imgBase64 });
-		});
+		const imgBase64 = await getImageUrl(file);
+		debugger;
+		this.clarifaiDetectFace({ base64: imgBase64 });
 	};
 
 	onButtonSubmit = (e) => {
