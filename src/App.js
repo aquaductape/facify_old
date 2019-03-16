@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
+import Clarifai from 'clarifai';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
-import Clarifai from 'clarifai';
-import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
 import Stats from './components/Stats/Stats';
+import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
+import { getDataUrl } from './utils/resetOrientation';
+
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
 
 const app = new Clarifai.App({
@@ -20,7 +22,30 @@ class App extends Component {
 		imageSize: null,
 		boundingBox: null,
 		canvasCollection: [],
-		bbIdx: 0
+		fileData: null
+	};
+
+	clarifaiDetectFace = (input) => {
+		let imgBase64Only;
+		let dataURL = input;
+
+		if (typeof input === 'object') {
+			dataURL = input.base64;
+			imgBase64Only = input.base64.replace(/data:.*;base64,/, '');
+			input.base64 = imgBase64Only;
+		}
+		app.models.predict(Clarifai.FACE_DETECT_MODEL, input).then(
+			(response) => {
+				const box = response.outputs[0].data.regions || [];
+				this.setState({ boundingBox: box });
+				this.setState({ imageStatusOk: true });
+				this.setState({ imageUrl: dataURL });
+			},
+			(err) => {
+				this.setState({ imageStatusOk: err.status });
+				this.setState({ boundingBox: null });
+			}
+		);
 	};
 
 	onInputChange = (e) => {
@@ -36,7 +61,6 @@ class App extends Component {
 		};
 		const canvasExist = findCanvasItem(id, canvasCollection);
 
-		debugger;
 		if (!canvasExist) {
 			canvasCollection.push(canvasItem);
 
@@ -58,36 +82,11 @@ class App extends Component {
 
 	onImageUpload = (e) => {
 		const file = e.target.files[0];
-		const reader = new FileReader();
-		debugger;
-		reader.addEventListener(
-			'load',
-			() => {
-				const imgURL = reader.result;
-				const imgBase64Only = imgURL.replace(/data:.*;base64,/, '');
-				app.models
-					.predict(Clarifai.FACE_DETECT_MODEL, {
-						base64: imgBase64Only
-					})
-					.then(
-						(response) => {
-							const box = response.outputs[0].data.regions;
-							this.setState({ boundingBox: box });
-							this.setState({ imageStatusOk: true });
-							this.setState({ imageUrl: imgURL });
-						},
-						(err) => {
-							this.setState({ imageStatusOk: err.status });
-							this.setState({ boundingBox: null });
-						}
-					);
-			},
-			false
-		);
 
-		if (file) {
-			reader.readAsDataURL(file);
-		}
+		// resets original orientation back to 1 if needed
+		getDataUrl(file, (imgBase64) => {
+			this.clarifaiDetectFace({ base64: imgBase64 });
+		});
 	};
 
 	onButtonSubmit = (e) => {
@@ -97,18 +96,7 @@ class App extends Component {
 			return null;
 		}
 
-		app.models.predict(Clarifai.FACE_DETECT_MODEL, inputVal).then(
-			(response) => {
-				const box = response.outputs[0].data.regions;
-				this.setState({ boundingBox: box });
-				this.setState({ imageStatusOk: true });
-				this.setState({ imageUrl: inputVal });
-			},
-			(err) => {
-				this.setState({ imageStatusOk: err.status });
-				this.setState({ boundingBox: null });
-			}
-		);
+		this.clarifaiDetectFace(inputVal);
 	};
 
 	render() {

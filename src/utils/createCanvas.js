@@ -4,7 +4,6 @@ const findCanvasItem = (id, canvasCollection) => {
 
 const removePreviousCanvasCollection = function(canvasCollection) {
 	const filteredCollection = canvasCollection.filter((canvas) => canvas.clientHeight && canvas.clientWidth);
-	debugger;
 	this.setState({ canvasCollection: filteredCollection });
 };
 
@@ -34,8 +33,6 @@ const createCanvas = function(id, img, boundingBox) {
 	const endCropHeight =
 		imgNaturalHeight /
 		((imgNaturalHeight - (imgNaturalHeight * (1 - boundingBox.bottom_row) + startCropHeight)) / canvasHeight);
-
-	debugger;
 
 	canvas.height = canvasHeight;
 	canvas.width = canvasWidth;
