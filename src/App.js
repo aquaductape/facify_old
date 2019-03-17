@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import Clarifai from 'clarifai';
+import blueImpLoadImage from 'blueimp-load-image';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
 import Stats from './components/Stats/Stats';
 import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
-import { getImageUrl } from './utils/resetOrientation';
+import { getImageUrlRearCamera, getImageUrlFrontCamera } from './utils/resetOrientation';
 
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
 
@@ -81,16 +82,28 @@ class App extends Component {
 	};
 
 	onImageUpload = async (e) => {
-		// e.persist();
 		const file = e.target.files[0];
+
 		if (!file) {
 			return null;
 		}
-		debugger;
+
+		blueImpLoadImage.parseMetaData(file, async (data) => {
+			debugger;
+			const exif = data.exif && data.exif.getAll();
+
+			if (!exif || (exif.GPSVersionID && exif.FocalLength >= 4)) {
+				const imgBase64 = await getImageUrlRearCamera(file);
+				debugger;
+				this.clarifaiDetectFace({ base64: imgBase64 });
+			} else {
+				getImageUrlFrontCamera(file, (imgBase64) => {
+					this.clarifaiDetectFace({ base64: imgBase64 });
+				});
+			}
+		});
+		// debugger;
 		// resets original orientation back to 1 if needed
-		const imgBase64 = await getImageUrl(file);
-		debugger;
-		this.clarifaiDetectFace({ base64: imgBase64 });
 	};
 
 	onButtonSubmit = (e) => {
