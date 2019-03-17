@@ -12,7 +12,6 @@ const ImageLinkForm = ({ inputValue, onInputChange, onImageUpload, onButtonSubmi
 							name="file"
 							id="file"
 							className="input-file--hidden"
-							accept="image/*"
 						/>
 						<label className="label-input-file" htmlFor="file">
 							Upload Image
