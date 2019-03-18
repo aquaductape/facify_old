@@ -36,7 +36,7 @@ var __awaiter =
  *
  * Optionally resize to a smaller maximum width - to improve performance for larger image thumbnails.
  */
-function getImageUrlRearCamera(file, maxWidth) {
+function getImageUrl(file, maxWidth) {
 	return __awaiter(this, void 0, void 0, function*() {
 		return readOrientation(file).then((orientation) => applyRotation(file, orientation || 1, maxWidth || 999999));
 	});
@@ -230,4 +230,4 @@ function getImageUrlFrontCamera(file, callback2) {
 	reader.readAsArrayBuffer(file);
 }
 
-export { getImageUrlRearCamera, getImageUrlFrontCamera };
+export { getImageUrl, getImageUrlFrontCamera };

@@ -48,32 +48,15 @@ h1 {
 	justify-content: center;
 	cursor: pointer;
 	transition: 500ms;
+	border-right: 5px solid #eaeaea;
 }
 
 .label-input-file:hover,
 .input-file--hidden:focus + .label-input-file {
 	outline: none;
 	background: #c6c6c6;
+	border-right: 5px solid #c6c6c6;
 	color: #414141;
-}
-
-.label-input-file:after {
-	position: absolute;
-	content: '';
-	top: 0;
-	right: -12px;
-	width: 0;
-	height: 0;
-	border-width: 42px 14px 0 0;
-	border-color: #eaeaea transparent transparent transparent;
-	border-style: solid;
-	pointer-events: none;
-}
-
-.label-input-file:hover:after,
-.input-file--hidden:focus + .label-input-file:after {
-	outline: none;
-	border-color: #c6c6c6 transparent transparent transparent;
 }
 
 .input-button {

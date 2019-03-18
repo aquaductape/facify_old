@@ -4,13 +4,15 @@ import Error400 from '../Error/Error400';
 import ImageDemo from './ImagePanel/ImageDemo';
 import InfoDemo from './ImagePanel/InfoDemo';
 
-const FaceRecognition = ({ imageStatus, imageUrl, boundingBox, onMainImageLoad, onCanvas }) => {
+const FaceRecognition = ({ display, imageStatus, imageUrl, boundingBox, onMainImageLoad, onCanvas }) => {
+	debugger;
+	display = display.display === 'none' ? display : { display: 'grid' };
 	let render;
 	if (imageStatus === null) {
 		render = null;
 	} else if (imageStatus !== 400) {
 		render = (
-			<div className="image-panel" style={{ maxWidth: '800px' }}>
+			<div style={display} className="image-panel">
 				<ImageDemo imageUrl={imageUrl} boundingBox={boundingBox} onMainImageLoad={onMainImageLoad} />
 				<InfoDemo boundingBox={boundingBox} onCanvas={onCanvas} />
 			</div>

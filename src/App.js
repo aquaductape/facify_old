@@ -7,7 +7,8 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
 import Stats from './components/Stats/Stats';
 import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
-import { getImageUrlRearCamera, getImageUrlFrontCamera } from './utils/resetOrientation';
+import { getImageUrlFrontCamera, getImageUrl } from './utils/resetOrientation';
+import Loading from './components/Loading/Loading';
 
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
 
@@ -23,7 +24,7 @@ class App extends Component {
 		imageSize: null,
 		boundingBox: null,
 		canvasCollection: [],
-		fileData: null
+		isLoading: false
 	};
 
 	clarifaiDetectFace = (input) => {
@@ -38,11 +39,13 @@ class App extends Component {
 		app.models.predict(Clarifai.FACE_DETECT_MODEL, input).then(
 			(response) => {
 				const box = response.outputs[0].data.regions || [];
+				this.setState({ isLoading: false });
 				this.setState({ boundingBox: box });
 				this.setState({ imageStatusOk: true });
 				this.setState({ imageUrl: dataURL });
 			},
 			(err) => {
+				this.setState({ isLoading: false });
 				this.setState({ imageStatusOk: err.status });
 				this.setState({ boundingBox: null });
 			}
@@ -81,29 +84,35 @@ class App extends Component {
 		removePreviousCanvasCollection.call(this, this.state.canvasCollection.slice());
 	};
 
-	onImageUpload = async (e) => {
+	onImageUpload = (e) => {
 		const file = e.target.files[0];
 
 		if (!file) {
 			return null;
 		}
 
+		this.setState({ isLoading: 'yes:client' });
+
 		blueImpLoadImage.parseMetaData(file, async (data) => {
-			debugger;
 			const exif = data.exif && data.exif.getAll();
 
 			if (!exif || (exif.GPSVersionID && exif.FocalLength >= 4)) {
-				const imgBase64 = await getImageUrlRearCamera(file);
-				debugger;
+				// sets Orientation the fastest but has trouble rendering front(selfie) camera
+				const imgBase64 = await getImageUrl(file);
+
+				this.setState({ isLoading: 'yes:clarifai' });
+
 				this.clarifaiDetectFace({ base64: imgBase64 });
 			} else {
+				// very slow, only use it rendering front(selfie) camera since the optimized version has issues
+				debugger;
+				this.setState({ isLoading: 'yes:clarifai' });
+
 				getImageUrlFrontCamera(file, (imgBase64) => {
 					this.clarifaiDetectFace({ base64: imgBase64 });
 				});
 			}
 		});
-		// debugger;
-		// resets original orientation back to 1 if needed
 	};
 
 	onButtonSubmit = (e) => {
@@ -117,18 +126,32 @@ class App extends Component {
 	};
 
 	render() {
+		let loaderCss;
+		let hide;
+
+		if (this.state.isLoading === 'yes:client' || this.state.isLoading === 'yes:clarifai') {
+			loaderCss = {
+				height: '500px'
+			};
+			hide = { display: 'none' };
+		} else {
+			loaderCss = null;
+			hide = { display: 'block' };
+		}
 		return (
 			<div className="App">
 				<Logo />
-				<main>
+				<main style={loaderCss}>
 					<ImageLinkForm
 						inputValue={this.state.input}
 						onImageUpload={this.onImageUpload}
 						onButtonSubmit={this.onButtonSubmit}
 						onInputChange={this.onInputChange}
 					/>
-					<Stats boundingBox={this.state.boundingBox} />
+					<Loading loading={this.state.isLoading} />
+					<Stats display={hide} boundingBox={this.state.boundingBox} />
 					<FaceRecognition
+						display={hide}
 						imageStatus={this.state.imageStatusOk}
 						imageUrl={this.state.imageUrl}
 						onMainImageLoad={this.onMainImageLoad}
