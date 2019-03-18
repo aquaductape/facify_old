@@ -122,6 +122,7 @@ class App extends Component {
 			return null;
 		}
 
+		this.setState({ isLoading: 'yes:clarifai' });
 		this.clarifaiDetectFace(inputVal);
 	};
 
