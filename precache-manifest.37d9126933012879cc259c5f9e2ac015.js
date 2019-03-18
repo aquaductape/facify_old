@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/facify/static/js/runtime~main.43fb29dd.js"
   },
   {
-    "revision": "5d9ae8407a491c702032",
-    "url": "/facify/static/js/main.e2f5ed5e.chunk.js"
+    "revision": "437da6e1e7d5087d555a",
+    "url": "/facify/static/js/main.a36e0f60.chunk.js"
   },
   {
     "revision": "a64825c63278052b3332",
     "url": "/facify/static/js/2.09ea40e1.chunk.js"
   },
   {
-    "revision": "5d9ae8407a491c702032",
+    "revision": "437da6e1e7d5087d555a",
     "url": "/facify/static/css/main.15b79ea0.chunk.css"
   },
   {
-    "revision": "f68b3db049b1512cd0f0443127e09184",
+    "revision": "53e0e1824b1d7667710c67c4aad27a7d",
     "url": "/facify/index.html"
   }
 ];
