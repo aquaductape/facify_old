@@ -5,7 +5,6 @@ import ImageDemo from './ImagePanel/ImageDemo';
 import InfoDemo from './ImagePanel/InfoDemo';
 
 const FaceRecognition = ({ display, imageStatus, imageUrl, boundingBox, onMainImageLoad, onCanvas }) => {
-	debugger;
 	display = display.display === 'none' ? display : { display: 'grid' };
 	let render;
 	if (imageStatus === null) {

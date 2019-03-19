@@ -4,7 +4,6 @@ import Base64Render from './Base64Render.js/Base64Render';
 import FaceDetection from './FaceDetection.js/FaceDetection';
 
 const Loading = ({ loading }) => {
-	debugger;
 	let render;
 	switch (loading) {
 		case 'yes:client':

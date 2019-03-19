@@ -105,7 +105,6 @@ class App extends Component {
 				this.clarifaiDetectFace({ base64: imgBase64 });
 			} else {
 				// very slow, only use it rendering front(selfie) camera since the optimized version has issues
-				debugger;
 
 				getImageUrlFrontCamera(file, (imgBase64) => {
 					this.setState({ isLoading: 'yes:clarifai' });
