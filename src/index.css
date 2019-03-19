@@ -1,9 +1,7 @@
 html {
 	height: 100%;
 }
-* {
-	box-sizing: border-box;
-}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -15,6 +13,7 @@ body {
 	background-size: cover;
 	background-repeat: no-repeat;
 	text-align: center;
+	padding-bottom: 10px;
 }
 
 code {
