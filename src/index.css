@@ -1,7 +1,3 @@
-html {
-	height: 100%;
-}
-
 body {
 	margin: 0;
 	padding: 0;
@@ -9,10 +5,8 @@ body {
 		"Droid Sans", "Helvetica Neue", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	background: url('./img/main_background.svg');
-	background-size: cover;
-	background-repeat: no-repeat;
-	text-align: center;
+	background: url('./img/main_background.svg') no-repeat center top fixed;
+	background-size: 110% auto;
 	padding-bottom: 10px;
 }
 

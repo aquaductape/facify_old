@@ -27,9 +27,11 @@
 	margin-bottom: 50px;
 }
 
-h6,
-h4 {
+.loading-description {
+	text-align: center;
 	color: #919191;
+	font-size: 0.6rem;
+	font-size: 3vmin;
 }
 
 @keyframes fulfilling-square-spinner-animation {
