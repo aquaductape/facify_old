@@ -8,7 +8,10 @@ const Base64Render = () => {
 					<div className="spinner-inner" />
 				</div>
 			</div>
-			<h6>Rotating Base64 Image URL</h6>
+			<div className="loading-description">
+				<h2>Creating Base64 Image URL</h2>
+				<p>Applying rotation to compensate for EXIF orientation when needed</p>
+			</div>
 		</div>
 	);
 };

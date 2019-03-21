@@ -11,7 +11,10 @@ const FaceDetection = () => {
 					<div className="square" />
 				</div>
 			</div>
-			<h6>Locating Faces</h6>
+			<div className="loading-description">
+				<h2>Locating Faces</h2>
+				<p>Waiting for Clarifai's Server to read your Image</p>
+			</div>
 		</div>
 	);
 };
