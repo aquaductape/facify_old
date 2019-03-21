@@ -1,7 +1,7 @@
 import React from 'react';
 import BoundingBox from './Bounding/BoundingBox';
 
-const ImageDemo = ({ imageUrl, onMainImageLoad, boundingBox }) => {
+const ImageDemo = ({ imageUrl, onMainImageLoad, boundingBox, onToggleBoundingBoxHighlight }) => {
 	return (
 		<div className="container">
 			<div className="container--image-demo">
@@ -9,7 +9,14 @@ const ImageDemo = ({ imageUrl, onMainImageLoad, boundingBox }) => {
 				{boundingBox.map(({ region_info }) => {
 					const boundingBox = region_info.bounding_box;
 					const id = `${boundingBox.top_row}${boundingBox.left_col}${boundingBox.bottom_row}${boundingBox.right_col}`;
-					return <BoundingBox key={id} boundingBox={region_info.bounding_box} />;
+					return (
+						<BoundingBox
+							key={id}
+							boxId={id}
+							boundingBox={region_info.bounding_box}
+							onToggleBoundingBoxHighlight={onToggleBoundingBoxHighlight}
+						/>
+					);
 				})}
 			</div>
 		</div>

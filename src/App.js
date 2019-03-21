@@ -7,7 +7,8 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
 import Stats from './components/Stats/Stats';
 import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
-import { getImageUrlFrontCamera, getImageUrl } from './utils/resetOrientation';
+import getImageUrl from './lib/getImageUrl';
+import getImageUrlFrontCamera from './lib/getDataUrl';
 import Loading from './components/Loading/Loading';
 
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
@@ -48,6 +49,7 @@ class App extends Component {
 				this.setState({ isLoading: false });
 				this.setState({ imageStatusOk: err.status });
 				this.setState({ boundingBox: null });
+				this.setState({ imageUrl: dataURL });
 			}
 		);
 	};
@@ -125,6 +127,42 @@ class App extends Component {
 		this.clarifaiDetectFace(inputVal);
 	};
 
+	onToggleBoundingBoxHighlight = (e) => {
+		// Not a React Solution, use refs instead when have time
+		const element = e.target;
+		const facesDemo = document.querySelectorAll('.highlight');
+		const facesBounding = document.querySelectorAll('.bounding-box');
+		let id;
+		if (e.type === 'mouseover') {
+			facesDemo.forEach((face) => {
+				face.classList.remove('highlight');
+			});
+			facesBounding.forEach((face) => {
+				face.classList.remove('highlight--bounding-box');
+			});
+			if (element.id.match('face-bounding-box-')) {
+				id = element.id.replace('face-bounding-box-', '');
+				element.classList.add('highlight--bounding-box');
+				const faceDemoSelected = document.getElementById('face-container-' + id);
+				faceDemoSelected.classList.add('highlight');
+				faceDemoSelected.scrollIntoView();
+			} else {
+				const parent = element.parentNode;
+				id = parent.id.replace('face-container-', '');
+				parent.classList.add('highlight');
+				const faceDemoSelected = document.getElementById('face-bounding-box-' + id);
+				faceDemoSelected.classList.add('highlight--bounding-box');
+			}
+		} else {
+			facesDemo.forEach((face) => {
+				face.classList.remove('highlight');
+			});
+			facesBounding.forEach((face) => {
+				face.classList.add('highlight--bounding-box');
+			});
+		}
+	};
+
 	render() {
 		let loaderCss;
 		let hide;
@@ -157,6 +195,7 @@ class App extends Component {
 						onMainImageLoad={this.onMainImageLoad}
 						boundingBox={this.state.boundingBox}
 						onCanvas={this.onCanvas}
+						onToggleBoundingBoxHighlight={this.onToggleBoundingBoxHighlight}
 					/>
 				</main>
 			</div>
