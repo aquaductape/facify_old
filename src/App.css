@@ -56,6 +56,26 @@ main {
 	transition: 500ms;
 }
 
+.input-button--webcam {
+	width: 100%;
+	font-size: 1rem;
+	border: none;
+	padding: 10px 20px;
+	background: inherit;
+	border-right: 5px solid #eaeaea;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: 500ms;
+}
+
+.input-button--webcam:hover,
+.input-button--webcam:focus {
+	background: #c6c6c6;
+	color: #414141;
+	border-right: 5px solid #c6c6c6;
+	outline: none;
+}
+
 .input-button:hover {
 	color: #ffffff;
 	background: #000000;
@@ -95,8 +115,22 @@ main {
 
 .multifile-upload-group {
 	display: grid;
-	grid-template-columns: 1fr 102px;
+	grid-template-columns: 1fr 1fr;
 }
+
+.multifile-upload-group--browser-view {
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+.multifile-upload-group--browser-view .label-input-file,
+.multifile-upload-group--browser-view .input-button--webcam {
+	border: none;
+}
+.multifile-upload-group--browser-view .label-input-file {
+	height: 38px;
+}
+
 #logo {
 	color: white;
 	font-weight: bold;
@@ -113,18 +147,19 @@ main {
 	font-size: 1rem;
 }
 
-@media (min-width: 375px) {
-	.multifile-upload-group {
-		grid-template-columns: 1fr 130px;
-	}
-}
-
 @media (min-width: 600px) {
-	.multifile-upload-group {
-		grid-template-columns: 1fr 1fr;
+	.multifile-upload-group--browser-view {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.multifile-upload-group--browser-view .label-input-file,
+	.multifile-upload-group--browser-view .input-button--webcam {
+		border-right: 5px solid #c6c6c6;
+	}
+	.multifile-upload-group--browser-view .label-input-file {
+		height: auto;
 	}
 }
-
 @media (min-width: 768px) {
 	.App {
 		padding: 0 50px;
@@ -134,6 +169,9 @@ main {
 @media (min-width: 1200px) {
 	.App {
 		max-width: 80%;
+	}
+	.multifile-upload-group--browser-view {
+		grid-template-columns: 1fr 1fr 3fr;
 	}
 
 	.stats {

@@ -10,12 +10,17 @@ import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './
 import getImageUrl from './lib/getImageUrl';
 import getImageUrlFrontCamera from './lib/getDataUrl';
 import Loading from './components/Loading/Loading';
+import Landing from './components/Landing/Landing';
+import { isMobile } from 'react-device-detect';
 
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
 
 const app = new Clarifai.App({
 	apiKey: CLARIFAI_API_KEY
 });
+
+if (isMobile) {
+}
 
 class App extends Component {
 	state = {
@@ -186,6 +191,7 @@ class App extends Component {
 						onButtonSubmit={this.onButtonSubmit}
 						onInputChange={this.onInputChange}
 					/>
+					<Landing boundingBox={this.state.boundingBox} loading={this.state.isLoading} />
 					<Loading loading={this.state.isLoading} />
 					<Stats display={hide} boundingBox={this.state.boundingBox} />
 					<FaceRecognition

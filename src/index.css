@@ -5,8 +5,10 @@ body {
 		"Droid Sans", "Helvetica Neue", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	/* background: url('./img/main_background.svg') no-repeat center top fixed;
+	background-size: 110% auto; */
 	background: url('./img/main_background.svg') no-repeat center top fixed;
-	background-size: 110% auto;
+	background-size: 100% auto;
 	padding-bottom: 10px;
 }
 
