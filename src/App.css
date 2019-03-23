@@ -56,6 +56,17 @@ main {
 	transition: 500ms;
 }
 
+.input-button:hover {
+	color: #ffffff;
+	background: #000000;
+}
+
+.input-button:focus {
+	outline: none;
+	color: #ffffff;
+	background: #000000;
+}
+
 .input-button--webcam {
 	width: 100%;
 	font-size: 1rem;
@@ -76,33 +87,26 @@ main {
 	outline: none;
 }
 
-.input-button:hover {
-	color: #ffffff;
-	background: #000000;
-}
-
-.input-button:focus {
-	outline: none;
-	color: white;
-	background: #000000;
-}
-
 .input-text {
 	padding: 10px;
 	background: #ffffff;
 	border: none;
 	color: #8e8e8e;
 	font-weight: normal;
+	text-overflow: ellipsis;
 }
 
 .input-text:focus {
-	outline: none;
 	color: #333333;
 	font-weight: bold;
+	outline: none;
 }
 
 .input-text:focus::placeholder {
-	outline: none;
+	color: #ffffff;
+}
+
+.basic-placeholder:focus::placeholder {
 	color: #333333;
 	font-weight: bold;
 }
@@ -142,9 +146,9 @@ main {
 
 .error-message {
 	text-align: center;
-	padding: 20px;
+	padding: 9vmin;
 	color: #999999;
-	font-size: 1rem;
+	font-size: 3vmin;
 }
 
 @media (min-width: 600px) {

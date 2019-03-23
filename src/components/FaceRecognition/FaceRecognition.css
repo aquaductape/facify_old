@@ -13,6 +13,7 @@
 }
 .container--image-demo {
 	position: relative;
+	width: 100%;
 }
 
 .container {
@@ -37,12 +38,24 @@
 }
 
 .info-demo {
+	position: relative;
 	display: flex;
 	flex-flow: row wrap;
 	align-content: flex-start;
 	justify-content: space-between;
 	max-height: 130px;
 	overflow-y: auto;
+}
+
+.info-demo .container-loader {
+	margin: 0;
+	display: block;
+	width: 100%;
+}
+
+.info-demo .lds-ring {
+	display: block;
+	margin: 0 auto;
 }
 
 canvas {
