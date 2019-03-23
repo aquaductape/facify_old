@@ -5,8 +5,12 @@ import Loading from '../../Loading/Loading';
 
 const InfoDemo = ({ areCroppedImagesLoading, boundingBox, onCanvas, onToggleBoundingBoxHighlight }) => {
 	const loading = areCroppedImagesLoading ? 'yes:client-images' : false;
+	let flexContent = null;
+	if (boundingBox) {
+		flexContent = boundingBox.length > 4 ? null : { justifyContent: 'left' };
+	}
 	return (
-		<div className="info-demo">
+		<div style={flexContent} className="info-demo">
 			<Stats className="stats--info-demo" boundingBox={boundingBox} />
 			<Loading loading={loading} />
 			{boundingBox.map(({ region_info }) => {
