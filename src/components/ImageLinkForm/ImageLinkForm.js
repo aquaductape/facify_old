@@ -8,14 +8,28 @@ if (isBrowser) {
 	displayInputGroup = 'input-group--browser-view';
 }
 
-const ImageLinkForm = ({ inputValue, onInputChange, onImageUpload, onButtonSubmit }) => {
+const ImageLinkForm = ({
+	inputValue,
+	inputPlaceHolder,
+	onInputChange,
+	onImageUpload,
+	onButtonSubmit,
+	onWebCamButtonClick,
+	inputRef
+}) => {
+	let basicPlaceHolder = '';
+	if (inputPlaceHolder === 'Or type URL...') {
+		basicPlaceHolder = 'basic-placeholder';
+	}
 	return (
 		<div>
 			<div>
 				<div className={`input-group ${displayInputGroup}`}>
 					<div className={`multifile-upload-group ${displayMultifileUploadGroup}`}>
 						<BrowserView>
-							<button className="input-button--webcam">WebCam</button>
+							<button onClick={onWebCamButtonClick} className="input-button--webcam">
+								WebCam
+							</button>
 						</BrowserView>
 						<input
 							onChange={onImageUpload}
@@ -28,13 +42,14 @@ const ImageLinkForm = ({ inputValue, onInputChange, onImageUpload, onButtonSubmi
 							Upload
 						</label>
 						<input
+							ref={inputRef}
 							autoFocus
 							spellCheck="false"
 							value={inputValue}
 							onChange={onInputChange}
-							className="input-text"
+							className={`input-text ${basicPlaceHolder}`}
 							type="text"
-							placeholder="Or type URL..."
+							placeholder={inputPlaceHolder}
 						/>
 					</div>
 					<button onClick={onButtonSubmit} className="input-button">
