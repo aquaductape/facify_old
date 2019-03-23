@@ -16,13 +16,19 @@ const createCanvas = function(id, img, boundingBox) {
 	canvas = canvas.canvas;
 	const ctx = canvas.getContext('2d');
 
-	// if (img.src.match(/^https:\/\//)) {
 	const downloadedImage = new Image();
+	const proxy = 'https://cors-anywhere.herokuapp.com/';
 	downloadedImage.crossOrigin = 'Anonymous';
-	downloadedImage.src = img.src;
+
+	if (img.src.match(/^data:image\/png;base64,/)) {
+		downloadedImage.src = img.src;
+	} else {
+		downloadedImage.src = proxy + img.src;
+	}
+
 	img = downloadedImage;
 
-	img.onload = function() {
+	img.onload = () => {
 		const startCropWidth = imgNaturalWidth * boundingBox.left_col;
 		const startCropHeight = imgNaturalHeight * boundingBox.top_row;
 		const endCropWidth = imgNaturalWidth * boundingBox.right_col - imgNaturalWidth * boundingBox.left_col;
@@ -47,10 +53,11 @@ const createCanvas = function(id, img, boundingBox) {
 		const dataUrl = canvas.toDataURL('image/jpeg', 1.0);
 		const newImg = new Image();
 		newImg.src = dataUrl;
-		newImg.onload = function() {
+		newImg.onload = () => {
 			const canvasContainer = document.getElementById('face-container-' + id);
 			newImg.classList = 'cropped-face';
 			canvasContainer.appendChild(newImg);
+			this.setState({ areCroppedImagesLoading: false });
 		};
 	};
 };
