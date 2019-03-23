@@ -1,15 +1,15 @@
 import React from 'react';
 
-const Stats = ({ display, boundingBox }) => {
+const Stats = ({ loading, boundingBox }) => {
 	const strFace = boundingBox && boundingBox.length === 1 ? 'Face' : 'Faces';
 
-	return (
-		boundingBox && (
-			<div style={display} className="stats">
+	let render =
+		!loading && boundingBox ? (
+			<div className="stats">
 				<p>Found {`${boundingBox.length} ${strFace}`} </p>
 			</div>
-		)
-	);
+		) : null;
+	return render;
 };
 
 export default Stats;

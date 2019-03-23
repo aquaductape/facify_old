@@ -3,9 +3,9 @@ import './Landing.css';
 import face from '../../img/face_detect.svg';
 import logo from '../../img/logo.svg';
 
-const Landing = ({ loading, boundingBox }) => {
-	const display = !loading && !boundingBox;
-	return display ? (
+const Landing = ({ loading, imageStatusOk, boundingBox, isWebCamOn }) => {
+	const render = !loading && !boundingBox && !isWebCamOn && imageStatusOk !== 400;
+	return render ? (
 		<header>
 			<div className="header-title--container">
 				<div className="header-title">

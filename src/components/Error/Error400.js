@@ -1,9 +1,8 @@
 import React from 'react';
 
-const Error400 = ({ display }) => {
-	display = display.display === 'none' ? display : { display: 'block' };
+const Error400 = () => {
 	return (
-		<div style={display} className="error-message">
+		<div className="error-message">
 			Oops! Something went wrong :( Perhapes the url is incorrect or your image is too large...
 		</div>
 	);

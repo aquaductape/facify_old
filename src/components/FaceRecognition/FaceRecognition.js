@@ -5,21 +5,24 @@ import ImageDemo from './ImagePanel/ImageDemo';
 import InfoDemo from './ImagePanel/InfoDemo';
 
 const FaceRecognition = ({
-	display,
-	imageStatus,
+	loading,
+	areCroppedImagesLoading,
+	imageStatusOk,
 	imageUrl,
 	boundingBox,
 	onMainImageLoad,
 	onCanvas,
 	onToggleBoundingBoxHighlight
 }) => {
-	display = display.display === 'none' ? display : { display: 'grid' };
 	let render;
-	if (imageStatus === null) {
+
+	if (imageStatusOk === null) {
 		render = null;
-	} else if (imageStatus !== 400) {
+	} else if (imageStatusOk === 400 && !loading) {
+		render = <Error400 />;
+	} else if (imageStatusOk !== 400 && !loading) {
 		render = (
-			<div style={display} className="image-panel">
+			<div className="image-panel">
 				<ImageDemo
 					imageUrl={imageUrl}
 					boundingBox={boundingBox}
@@ -27,6 +30,7 @@ const FaceRecognition = ({
 					onToggleBoundingBoxHighlight={onToggleBoundingBoxHighlight}
 				/>
 				<InfoDemo
+					areCroppedImagesLoading={areCroppedImagesLoading}
 					boundingBox={boundingBox}
 					onCanvas={onCanvas}
 					onToggleBoundingBoxHighlight={onToggleBoundingBoxHighlight}
@@ -34,7 +38,7 @@ const FaceRecognition = ({
 			</div>
 		);
 	} else {
-		render = <Error400 display={display} />;
+		render = null;
 	}
 	return render;
 };
