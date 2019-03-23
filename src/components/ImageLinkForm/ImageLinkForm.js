@@ -27,7 +27,7 @@ const ImageLinkForm = ({
 				<div className={`input-group ${displayInputGroup}`}>
 					<div className={`multifile-upload-group ${displayMultifileUploadGroup}`}>
 						<BrowserView>
-							<button onClick={onWebCamButtonClick} className="input-button--webcam">
+							<button id="webcam-button" onClick={onWebCamButtonClick} className="input-button--webcam">
 								WebCam
 							</button>
 						</BrowserView>

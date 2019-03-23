@@ -32,6 +32,9 @@ class App extends Component {
 		areCroppedImagesLoading: false
 	};
 
+	// removed auto focus to input
+	// on mobile it opens the keyboard which is distracting
+	// leaving this unused ref for reminder
 	inputRef = React.createRef();
 
 	clarifaiDetectFace = (input) => {
@@ -79,6 +82,9 @@ class App extends Component {
 			return null;
 		}
 
+		const webCamButton = document.getElementById('webcam-button');
+		webCamButton.textContent = 'WebCam';
+
 		player.srcObject.getVideoTracks().forEach((track) => track.stop());
 
 		this.setState({ isWebCamOn: false });
@@ -119,8 +125,6 @@ class App extends Component {
 	onImageUpload = (e) => {
 		const file = e.target.files[0];
 
-		this.setFocusOnInput();
-
 		if (!file) {
 			return null;
 		}
@@ -132,8 +136,6 @@ class App extends Component {
 
 	onButtonSubmit = (e) => {
 		const inputVal = this.state.input.trim();
-
-		this.setFocusOnInput();
 
 		if (inputVal === this.state.imageUrl) {
 			return null;
@@ -159,8 +161,14 @@ class App extends Component {
 	};
 
 	onWebCamButtonClick = (e) => {
-		this.setFocusOnInput();
-		this.setState({ isWebCamOn: true });
+		if (e.target.textContent === 'WebCam') {
+			e.target.textContent = 'Stop';
+			this.setState({ isWebCamOn: true });
+		} else {
+			e.target.textContent = 'WebCam';
+			this.stopWebCam();
+			this.setState({ isWebCamOn: false });
+		}
 	};
 
 	onCaptureButtonClick = () => {
