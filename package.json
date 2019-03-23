@@ -4,7 +4,6 @@
 	"private": true,
 	"homepage": "https://aquaductape.github.io/facify",
 	"dependencies": {
-		"blueimp-load-image": "git+https://github.com/blueimp/JavaScript-Load-Image.git#2.20.1",
 		"clarifai": "^2.9.0",
 		"gh-pages": "^2.0.1",
 		"react": "^16.8.4",
