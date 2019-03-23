@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import Clarifai from 'clarifai';
-import blueImpLoadImage from 'blueimp-load-image';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
 import Stats from './components/Stats/Stats';
 import { createCanvas, findCanvasItem, removePreviousCanvasCollection } from './utils/createCanvas';
-import getImageUrl from './lib/getImageUrl';
 import getImageUrlFrontCamera from './lib/getDataUrl';
 import Loading from './components/Loading/Loading';
 import Landing from './components/Landing/Landing';
-import { isMobile } from 'react-device-detect';
+import Webcam from './components/Webcam/Webcam';
+import dataURItoBlob from './lib/dataURItoBlob';
 
 const CLARIFAI_API_KEY = process.env.REACT_APP_CLARIFAI_API_KEY;
 
@@ -19,19 +18,21 @@ const app = new Clarifai.App({
 	apiKey: CLARIFAI_API_KEY
 });
 
-if (isMobile) {
-}
-
 class App extends Component {
 	state = {
 		input: '',
+		inputPlaceHolder: 'Or type URL...',
 		imageUrl: '',
 		imageStatusOk: null,
 		imageSize: null,
 		boundingBox: null,
 		canvasCollection: [],
-		isLoading: false
+		isWebCamOn: false,
+		isLoading: false,
+		areCroppedImagesLoading: false
 	};
+
+	inputRef = React.createRef();
 
 	clarifaiDetectFace = (input) => {
 		let imgBase64Only;
@@ -46,9 +47,11 @@ class App extends Component {
 			(response) => {
 				const box = response.outputs[0].data.regions || [];
 				this.setState({ isLoading: false });
+				this.setState({ areCroppedImagesLoading: true });
 				this.setState({ boundingBox: box });
 				this.setState({ imageStatusOk: true });
 				this.setState({ imageUrl: dataURL });
+				this.setState({ input: '' });
 			},
 			(err) => {
 				this.setState({ isLoading: false });
@@ -57,6 +60,28 @@ class App extends Component {
 				this.setState({ imageUrl: dataURL });
 			}
 		);
+	};
+
+	setFocusOnInput = () => {
+		this.inputRef.current.focus();
+	};
+
+	resetOrientation = (file) => {
+		getImageUrlFrontCamera(file, (imgBase64) => {
+			this.setState({ isLoading: 'yes:clarifai' });
+			this.clarifaiDetectFace({ base64: imgBase64 });
+		});
+	};
+
+	stopWebCam = () => {
+		const player = document.getElementById('player');
+		if (!player) {
+			return null;
+		}
+
+		player.srcObject.getVideoTracks().forEach((track) => track.stop());
+
+		this.setState({ isWebCamOn: false });
 	};
 
 	onInputChange = (e) => {
@@ -94,42 +119,61 @@ class App extends Component {
 	onImageUpload = (e) => {
 		const file = e.target.files[0];
 
+		this.setFocusOnInput();
+
 		if (!file) {
 			return null;
 		}
 
+		this.stopWebCam();
 		this.setState({ isLoading: 'yes:client' });
-
-		blueImpLoadImage.parseMetaData(file, async (data) => {
-			const exif = data.exif && data.exif.getAll();
-
-			if (!exif || (exif.GPSVersionID && exif.FocalLength >= 4)) {
-				// sets Orientation the fastest but has trouble rendering front(selfie) camera
-				const imgBase64 = await getImageUrl(file);
-
-				this.setState({ isLoading: 'yes:clarifai' });
-
-				this.clarifaiDetectFace({ base64: imgBase64 });
-			} else {
-				// very slow, only use it rendering front(selfie) camera since the optimized version has issues
-
-				getImageUrlFrontCamera(file, (imgBase64) => {
-					this.setState({ isLoading: 'yes:clarifai' });
-					this.clarifaiDetectFace({ base64: imgBase64 });
-				});
-			}
-		});
+		this.resetOrientation(file);
 	};
 
 	onButtonSubmit = (e) => {
 		const inputVal = this.state.input.trim();
 
+		this.setFocusOnInput();
+
 		if (inputVal === this.state.imageUrl) {
 			return null;
 		}
 
+		this.stopWebCam();
+		this.setState({ inputPlaceHolder: inputVal });
 		this.setState({ isLoading: 'yes:clarifai' });
 		this.clarifaiDetectFace(inputVal);
+	};
+
+	startWebCam = (player) => {
+		if (!player) {
+			return null;
+		}
+		const constraints = {
+			video: true
+		};
+
+		navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+			player.srcObject = stream;
+		});
+	};
+
+	onWebCamButtonClick = (e) => {
+		this.setFocusOnInput();
+		this.setState({ isWebCamOn: true });
+	};
+
+	onCaptureButtonClick = () => {
+		const player = document.getElementById('player');
+		const canvas = document.getElementById('canvas-webcam');
+		const ctx = canvas.getContext('2d');
+
+		ctx.drawImage(player, 0, 0, canvas.width, canvas.height);
+		const dataUrl = canvas.toDataURL('image/jpeg', 1.0);
+		const blob = dataURItoBlob(dataUrl);
+
+		this.stopWebCam();
+		this.resetOrientation(blob);
 	};
 
 	onToggleBoundingBoxHighlight = (e) => {
@@ -169,34 +213,36 @@ class App extends Component {
 	};
 
 	render() {
-		let loaderCss;
-		let hide;
-
-		if (this.state.isLoading === 'yes:client' || this.state.isLoading === 'yes:clarifai') {
-			loaderCss = {
-				height: '500px'
-			};
-			hide = { display: 'none' };
-		} else {
-			loaderCss = null;
-			hide = { display: 'block' };
-		}
 		return (
 			<div className="App">
 				<Logo />
-				<main style={loaderCss}>
+				<main>
 					<ImageLinkForm
 						inputValue={this.state.input}
+						inputPlaceHolder={this.state.inputPlaceHolder}
 						onImageUpload={this.onImageUpload}
 						onButtonSubmit={this.onButtonSubmit}
 						onInputChange={this.onInputChange}
+						onWebCamButtonClick={this.onWebCamButtonClick}
+						inputRef={this.inputRef}
 					/>
-					<Landing boundingBox={this.state.boundingBox} loading={this.state.isLoading} />
+					<Webcam
+						onCaptureButtonClick={this.onCaptureButtonClick}
+						startWebCam={this.startWebCam}
+						isWebCamOn={this.state.isWebCamOn}
+					/>
+					<Landing
+						isWebCamOn={this.state.isWebCamOn}
+						boundingBox={this.state.boundingBox}
+						loading={this.state.isLoading}
+						imageStatusOk={this.state.imageStatusOk}
+					/>
 					<Loading loading={this.state.isLoading} />
-					<Stats display={hide} boundingBox={this.state.boundingBox} />
+					<Stats loading={this.state.isLoading} boundingBox={this.state.boundingBox} />
 					<FaceRecognition
-						display={hide}
-						imageStatus={this.state.imageStatusOk}
+						loading={this.state.isLoading}
+						areCroppedImagesLoading={this.state.areCroppedImagesLoading}
+						imageStatusOk={this.state.imageStatusOk}
 						imageUrl={this.state.imageUrl}
 						onMainImageLoad={this.onMainImageLoad}
 						boundingBox={this.state.boundingBox}
