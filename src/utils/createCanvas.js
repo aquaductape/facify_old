@@ -55,8 +55,12 @@ const createCanvas = function(id, img, boundingBox) {
 		newImg.src = dataUrl;
 		newImg.onload = () => {
 			const canvasContainer = document.getElementById('face-container-' + id);
+			const countFaces = this.state.countFaces + 1;
+
 			newImg.classList = 'cropped-face';
+			newImg.alt = `face ${countFaces}`;
 			canvasContainer.appendChild(newImg);
+			this.setState({ countFaces });
 			this.setState({ areCroppedImagesLoading: false });
 		};
 	};

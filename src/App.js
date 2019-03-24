@@ -29,7 +29,8 @@ class App extends Component {
 		canvasCollection: [],
 		isWebCamOn: false,
 		isLoading: false,
-		areCroppedImagesLoading: false
+		areCroppedImagesLoading: false,
+		countFaces: 0
 	};
 
 	// removed auto focus to input
@@ -49,6 +50,7 @@ class App extends Component {
 		app.models.predict(Clarifai.FACE_DETECT_MODEL, input).then(
 			(response) => {
 				const box = response.outputs[0].data.regions || [];
+				this.setState({ countFaces: 0 });
 				this.setState({ isLoading: false });
 				this.setState({ areCroppedImagesLoading: true });
 				this.setState({ boundingBox: box });
