@@ -121,6 +121,7 @@ class App extends Component {
 			createCanvas.call(this, id, img, boundingBox);
 		});
 
+		this.setState({ areCroppedImagesLoading: false });
 		removePreviousCanvasCollection.call(this, this.state.canvasCollection.slice());
 	};
 

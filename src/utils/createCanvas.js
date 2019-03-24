@@ -61,7 +61,6 @@ const createCanvas = function(id, img, boundingBox) {
 			newImg.alt = `face ${countFaces}`;
 			canvasContainer.appendChild(newImg);
 			this.setState({ countFaces });
-			this.setState({ areCroppedImagesLoading: false });
 		};
 	};
 };
