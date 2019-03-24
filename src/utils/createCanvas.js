@@ -1,3 +1,5 @@
+const CORS_PROXY = process.env.REACT_APP_CORS_PROXY;
+
 const findCanvasItem = (id, canvasCollection) => {
 	return canvasCollection.find((canvas) => canvas.id === id);
 };
@@ -17,7 +19,7 @@ const createCanvas = function(id, img, boundingBox) {
 	const ctx = canvas.getContext('2d');
 
 	const downloadedImage = new Image();
-	const proxy = 'https://cors-anywhere.herokuapp.com/';
+	const proxy = CORS_PROXY;
 	downloadedImage.crossOrigin = 'Anonymous';
 
 	if (img.src.match(/^data:image\/png;base64,/)) {
