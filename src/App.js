@@ -50,9 +50,13 @@ class App extends Component {
 		app.models.predict(Clarifai.FACE_DETECT_MODEL, input).then(
 			(response) => {
 				const box = response.outputs[0].data.regions || [];
+
+				if (box.length > 0) {
+					this.setState({ areCroppedImagesLoading: true });
+				}
+
 				this.setState({ countFaces: 0 });
 				this.setState({ isLoading: false });
-				this.setState({ areCroppedImagesLoading: true });
 				this.setState({ boundingBox: box });
 				this.setState({ imageStatusOk: true });
 				this.setState({ imageUrl: dataURL });
@@ -121,7 +125,6 @@ class App extends Component {
 			createCanvas.call(this, id, img, boundingBox);
 		});
 
-		this.setState({ areCroppedImagesLoading: false });
 		removePreviousCanvasCollection.call(this, this.state.canvasCollection.slice());
 	};
 
